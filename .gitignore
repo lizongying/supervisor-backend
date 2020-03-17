@@ -1,0 +1,7 @@
+.DS_Store
+.idea
+conf/dev.yml
+conf/prod.yml
+pkg
+go.sum
+supervisor

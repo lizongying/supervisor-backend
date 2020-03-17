@@ -1,0 +1,4 @@
+server:
+  url: 127.0.0.1:8080
+supervisorList:
+  - {name: example, url: http://name:password@host:port/RPC2}
