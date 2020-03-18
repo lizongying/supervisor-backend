@@ -29,9 +29,9 @@ func main() {
 	}
 	r := gin.Default()
 	r.Use(Cors())
-	r.StaticFile("/", "./assets/index.html")
-	r.StaticFile("/favicon.ico", "./assets/favicon.ico")
-	r.Static("/static", "./assets/static")
+	r.StaticFile("/", "./dist/index.html")
+	r.StaticFile("/favicon.ico", "./dist/favicon.ico")
+	r.Static("/static", "./dist/static")
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
