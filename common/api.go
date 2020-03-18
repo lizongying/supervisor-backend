@@ -6,21 +6,21 @@ import (
 )
 
 type ProcessInfo struct {
-	Name          string `xmlrpc:"name"`
-	Group         string `xmlrpc:"group"`
-	Description   string `xmlrpc:"description"`
-	Start         int    `xmlrpc:"start"`
-	Stop          int    `xmlrpc:"stop"`
-	Now           int    `xmlrpc:"now"`
-	State         int    `xmlrpc:"state"`
-	StateName     string `xmlrpc:"statename"`
-	SpawnErr      string `xmlrpc:"spawnerr"`
-	ExitStatus    int    `xmlrpc:"exitstatus"`
-	LogFile       string `xmlrpc:"logfile"`
-	StdoutLogfile string `xmlrpc:"stdout_logfile"`
-	StderrLogfile string `xmlrpc:"stderr_logfile"`
-	Pid           int    `xmlrpc:"pid"`
-	Server        string
+	Name          string `xmlrpc:"name" json:"name"`
+	Group         string `xmlrpc:"group" json:"group"`
+	Description   string `xmlrpc:"description" json:"description"`
+	Start         int    `xmlrpc:"start" json:"start"`
+	Stop          int    `xmlrpc:"stop" json:"stop"`
+	Now           int    `xmlrpc:"now" json:"now"`
+	State         int    `xmlrpc:"state" json:"state"`
+	StateName     string `xmlrpc:"statename" json:"statename"`
+	SpawnErr      string `xmlrpc:"spawnerr" json:"spawnerr"`
+	ExitStatus    int    `xmlrpc:"exitstatus" json:"exitstatus"`
+	LogFile       string `xmlrpc:"logfile" json:"logfile"`
+	StdoutLogfile string `xmlrpc:"stdout_logfile" json:"stdout_logfile"`
+	StderrLogfile string `xmlrpc:"stderr_logfile" json:"stderr_logfile"`
+	Pid           int    `xmlrpc:"pid" json:"pid"`
+	Server        string `json:"server"`
 }
 
 type ProcessStatus struct {
