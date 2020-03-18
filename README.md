@@ -1,5 +1,7 @@
-##supervisor-backtend
-本项目可以和https://github.com/lizongying/supervisor-frontend结合使用
+# supervisor-backtend
+本项目可以和
+[supervisor-frontend](https://github.com/lizongying/supervisor-frontend)
+结合使用
 
 ## dev 
 ```
