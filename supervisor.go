@@ -32,9 +32,10 @@ func main() {
 	r.StaticFile("/", "./dist/index.html")
 	r.StaticFile("/favicon.ico", "./dist/favicon.ico")
 	r.Static("/static", "./dist/static")
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
+	r.GET("/api/supervisor/config", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"code": SuccessCode,
+			"data": common.Config,
 		})
 	})
 	r.POST("/api/supervisor/stop", func(c *gin.Context) {

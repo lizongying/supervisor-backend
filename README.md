@@ -6,12 +6,13 @@
 ## dev 
 ```
 export GIN_MODE=debug 
-go run supervisor.go -c /Users/lizongying/IdeaProjects/supervisor-backend/conf/dev.yml
+go run supervisor.go -c ./conf/dev.yml
 ```
 
 ## prod
 ```
+go build
 export GIN_MODE=release
-./supervisor -c /Users/lizongying/IdeaProjects/supervisor-backend/conf/prod.yml
+./supervisor -c ./conf/example.yml
 ```
 

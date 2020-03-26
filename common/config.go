@@ -10,17 +10,17 @@ import (
 var Config *config
 
 type server struct {
-	Url string `yaml:"url"`
+	Url string `yaml:"url" json:"-"`
 }
 
 type supervisor struct {
-	Name string `yaml:"name"`
-	Url  string `yaml:"url"`
+	Name string `yaml:"name" json:"name"`
+	Url  string `yaml:"url" json:"-"`
 }
 
 type config struct {
-	Server         *server       `yaml:"server"`
-	SupervisorList []*supervisor `yaml:"supervisorList"`
+	Server         *server       `yaml:"server" json:"server"`
+	SupervisorList []*supervisor `yaml:"supervisorList" json:"supervisorList"`
 }
 
 func LoadConfig(configPath string) (err error) {
