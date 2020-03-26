@@ -15,4 +15,5 @@ go build
 export GIN_MODE=release
 ./supervisor -c ./conf/example.yml
 ```
+![preview](./Screenshot.png)
 
