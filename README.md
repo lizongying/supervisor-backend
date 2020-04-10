@@ -5,15 +5,13 @@
 
 ## dev 
 ```
-export GIN_MODE=debug 
 go run supervisor.go -c ./conf/dev.yml
 ```
 
 ## prod
 ```
 go build
-export GIN_MODE=release
-./supervisor -c ./conf/example.yml
+./supervisor -c ./conf/prod.yml
 ```
 ![preview](./Screenshot.png)
 

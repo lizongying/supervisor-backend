@@ -11,6 +11,7 @@ var Config *config
 
 type server struct {
 	Url string `yaml:"url" json:"-"`
+	Mode string `yaml:"mode" json:"-"`
 }
 
 type supervisor struct {
