@@ -26,16 +26,14 @@ type config struct {
 	SupervisorList []*supervisor `yaml:"supervisorList" json:"supervisorList"`
 }
 
-func LoadConfig(configPath string) (err error) {
+func LoadConfig(configPath string) {
 	configData, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	err = yaml.Unmarshal(configData, &Config)
-	if err != nil {
+	if err := yaml.Unmarshal(configData, &Config); err != nil {
 		log.Fatalln(err)
 	}
-	return nil
 }
 
 func InitConfig() {
@@ -43,7 +41,5 @@ func InitConfig() {
 	configPathDefault = path.Join(configPathDefault, "example.yml")
 	configPath := flag.String("c", configPathDefault, "config file")
 	flag.Parse()
-	if err := LoadConfig(*configPath); err != nil {
-		log.Fatalln(err)
-	}
+	LoadConfig(*configPath)
 }
