@@ -5,13 +5,13 @@
 
 ## dev 
 ```
-go run supervisor.go -c ./conf/dev.yml
+go run supervisor.go -c ./dev.yml
 ```
 
 ## prod
 ```
 go build
-./supervisor -c ./conf/prod.yml
+./supervisor -c ./prod.yml
 ```
 ![preview](./Screenshot.png)
 

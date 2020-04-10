@@ -1,13 +1,10 @@
 package main
 
 import (
-	"flag"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"os"
-	"path"
 	"supervisor/common"
 )
 
@@ -23,7 +20,7 @@ var SuccessCode = 0
 var Supervisor = map[string]*common.SupervisorRpc{}
 
 func main() {
-	conf()
+	common.InitConfig()
 	server := common.Config.Server
 	gin.SetMode(server.Mode)
 	for _, supervisor := range common.Config.SupervisorList {
@@ -202,16 +199,5 @@ func main() {
 	})
 	if err := r.Run(server.Url); err != nil {
 		log.Fatalln(err)
-	}
-}
-
-func conf() {
-	configPathDefault, _ := os.Getwd()
-	configPathDefault = path.Join(configPathDefault, "conf", "example.yml")
-	configPath := flag.String("c", configPathDefault, "config file path")
-	flag.Parse()
-	err := common.LoadConfig(*configPath)
-	if err != nil {
-		return
 	}
 }

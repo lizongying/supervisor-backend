@@ -1,7 +1,7 @@
 .DS_Store
 .idea
-conf/dev.yml
-conf/prod.yml
+dev.yml
+prod.yml
 dist
 pkg
 go.sum

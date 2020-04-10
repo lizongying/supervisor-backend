@@ -1,16 +1,18 @@
 package common
 
 import (
-	"fmt"
+	"flag"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
+	"log"
 	"os"
+	"path"
 )
 
 var Config *config
 
 type server struct {
-	Url string `yaml:"url" json:"-"`
+	Url  string `yaml:"url" json:"-"`
 	Mode string `yaml:"mode" json:"-"`
 }
 
@@ -20,20 +22,28 @@ type supervisor struct {
 }
 
 type config struct {
-	Server         *server       `yaml:"server" json:"server"`
+	Server         *server       `yaml:"server" json:"-"`
 	SupervisorList []*supervisor `yaml:"supervisorList" json:"supervisorList"`
 }
 
 func LoadConfig(configPath string) (err error) {
 	configData, err := ioutil.ReadFile(configPath)
 	if err != nil {
-		fmt.Printf("config file read failed: %s", err)
-		os.Exit(-1)
+		log.Fatalln(err)
 	}
 	err = yaml.Unmarshal(configData, &Config)
 	if err != nil {
-		fmt.Printf("config parse failed: %s", err)
-		os.Exit(-1)
+		log.Fatalln(err)
 	}
 	return nil
+}
+
+func InitConfig() {
+	configPathDefault, _ := os.Getwd()
+	configPathDefault = path.Join(configPathDefault, "example.yml")
+	configPath := flag.String("c", configPathDefault, "config file")
+	flag.Parse()
+	if err := LoadConfig(*configPath); err != nil {
+		log.Fatalln(err)
+	}
 }
