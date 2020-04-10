@@ -9,21 +9,21 @@ import (
 	"path"
 )
 
-var Config *config
+var Conf *Config
 
-type server struct {
+type Server struct {
 	Url  string `yaml:"url" json:"-"`
 	Mode string `yaml:"mode" json:"-"`
 }
 
-type supervisor struct {
+type Supervisor struct {
 	Name string `yaml:"name" json:"name"`
 	Url  string `yaml:"url" json:"-"`
 }
 
-type config struct {
-	Server         *server       `yaml:"server" json:"-"`
-	SupervisorList []*supervisor `yaml:"supervisorList" json:"supervisorList"`
+type Config struct {
+	Server         *Server       `yaml:"server" json:"-"`
+	SupervisorList []*Supervisor `yaml:"supervisorList" json:"supervisorList"`
 }
 
 func LoadConfig(configPath string) {
@@ -31,7 +31,7 @@ func LoadConfig(configPath string) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	if err := yaml.Unmarshal(configData, &Config); err != nil {
+	if err := yaml.Unmarshal(configData, &Conf); err != nil {
 		log.Fatalln(err)
 	}
 }

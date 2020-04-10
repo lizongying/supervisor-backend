@@ -8,7 +8,7 @@ import (
 	"supervisor/app"
 )
 
-type requestJson struct {
+type Request struct {
 	Group  string `json:"group"`
 	Name   string `json:"name"`
 	Server string `json:"server"`
@@ -21,9 +21,9 @@ var Supervisor = map[string]*app.SupervisorRpc{}
 
 func main() {
 	app.InitConfig()
-	server := app.Config.Server
+	server := app.Conf.Server
 	gin.SetMode(server.Mode)
-	for _, supervisor := range app.Config.SupervisorList {
+	for _, supervisor := range app.Conf.SupervisorList {
 		Supervisor[supervisor.Name] = app.Rpc(supervisor.Url)
 	}
 	r := gin.New()
@@ -34,144 +34,141 @@ func main() {
 	r.GET("/api/supervisor/config", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"code": SuccessCode,
-			"data": app.Config,
+			"data": app.Conf,
 		})
 	})
+	var request Request
 	r.POST("/api/supervisor/stop", func(c *gin.Context) {
-		var RequestJson requestJson
-		err := c.BindJSON(&RequestJson)
+		err := c.BindJSON(&request)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		if _, ok := Supervisor[RequestJson.Server]; !ok {
+		if _, ok := Supervisor[request.Server]; !ok {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		_, err = Supervisor[RequestJson.Server].StopProcessGroup(RequestJson.Group)
+		_, err = Supervisor[request.Server].StopProcessGroup(request.Group)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		res, err := Supervisor[RequestJson.Server].GetProcessInfo(RequestJson.Group, RequestJson.Name)
+		res, err := Supervisor[request.Server].GetProcessInfo(request.Group, request.Name)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		res.Server = RequestJson.Server
+		res.Server = request.Server
 		c.JSON(http.StatusOK, gin.H{
 			"code": SuccessCode,
 			"data": res,
 		})
 	})
 	r.POST("/api/supervisor/start", func(c *gin.Context) {
-		var RequestJson requestJson
-		err := c.BindJSON(&RequestJson)
+		err := c.BindJSON(&request)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		if _, ok := Supervisor[RequestJson.Server]; !ok {
+		if _, ok := Supervisor[request.Server]; !ok {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		_, err = Supervisor[RequestJson.Server].StartProcessGroup(RequestJson.Group)
+		_, err = Supervisor[request.Server].StartProcessGroup(request.Group)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		res, err := Supervisor[RequestJson.Server].GetProcessInfo(RequestJson.Group, RequestJson.Name)
+		res, err := Supervisor[request.Server].GetProcessInfo(request.Group, request.Name)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		res.Server = RequestJson.Server
+		res.Server = request.Server
 		c.JSON(http.StatusOK, gin.H{
 			"code": SuccessCode,
 			"data": res,
 		})
 	})
 	r.POST("/api/supervisor/restart", func(c *gin.Context) {
-		var RequestJson requestJson
-		err := c.BindJSON(&RequestJson)
+		err := c.BindJSON(&request)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		if _, ok := Supervisor[RequestJson.Server]; !ok {
+		if _, ok := Supervisor[request.Server]; !ok {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		_, err = Supervisor[RequestJson.Server].StopProcessGroup(RequestJson.Group)
+		_, err = Supervisor[request.Server].StopProcessGroup(request.Group)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		_, err = Supervisor[RequestJson.Server].StartProcessGroup(RequestJson.Group)
+		_, err = Supervisor[request.Server].StartProcessGroup(request.Group)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		res, err := Supervisor[RequestJson.Server].GetProcessInfo(RequestJson.Group, RequestJson.Name)
+		res, err := Supervisor[request.Server].GetProcessInfo(request.Group, request.Name)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		res.Server = RequestJson.Server
+		res.Server = request.Server
 		c.JSON(http.StatusOK, gin.H{
 			"code": SuccessCode,
 			"data": res,
 		})
 	})
 	r.POST("/api/supervisor/status", func(c *gin.Context) {
-		var RequestJson requestJson
-		err := c.BindJSON(&RequestJson)
+		err := c.BindJSON(&request)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		if _, ok := Supervisor[RequestJson.Server]; !ok {
+		if _, ok := Supervisor[request.Server]; !ok {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		res, err := Supervisor[RequestJson.Server].GetProcessInfo(RequestJson.Group, RequestJson.Name)
+		res, err := Supervisor[request.Server].GetProcessInfo(request.Group, request.Name)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"code": ErrorCode,
 			})
 			return
 		}
-		res.Server = RequestJson.Server
+		res.Server = request.Server
 		c.JSON(http.StatusOK, gin.H{
 			"code": SuccessCode,
 			"data": res,
