@@ -1,4 +1,4 @@
-package common
+package app
 
 import (
 	"github.com/kolo/xmlrpc"

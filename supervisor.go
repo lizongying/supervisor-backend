@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
-	"supervisor/common"
+	"supervisor/app"
 )
 
 type requestJson struct {
@@ -17,14 +17,14 @@ type requestJson struct {
 var ErrorCode = 1
 var SuccessCode = 0
 
-var Supervisor = map[string]*common.SupervisorRpc{}
+var Supervisor = map[string]*app.SupervisorRpc{}
 
 func main() {
-	common.InitConfig()
-	server := common.Config.Server
+	app.InitConfig()
+	server := app.Config.Server
 	gin.SetMode(server.Mode)
-	for _, supervisor := range common.Config.SupervisorList {
-		Supervisor[supervisor.Name] = common.Rpc(supervisor.Url)
+	for _, supervisor := range app.Config.SupervisorList {
+		Supervisor[supervisor.Name] = app.Rpc(supervisor.Url)
 	}
 	r := gin.New()
 	r.Use(cors.Default())
@@ -34,7 +34,7 @@ func main() {
 	r.GET("/api/supervisor/config", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"code": SuccessCode,
-			"data": common.Config,
+			"data": app.Config,
 		})
 	})
 	r.POST("/api/supervisor/stop", func(c *gin.Context) {
@@ -178,7 +178,7 @@ func main() {
 		})
 	})
 	r.GET("/api/supervisor/list", func(c *gin.Context) {
-		list := make([]common.ProcessInfo, 0)
+		list := make([]app.ProcessInfo, 0)
 		for server, item := range Supervisor {
 			tempMap := map[string]byte{}
 			ret, _ := item.GetAllProcessInfo()
