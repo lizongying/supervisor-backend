@@ -2,7 +2,6 @@
 .idea
 dev.yml
 prod.yml
-dist
 pkg
 go.sum
 supervisor
