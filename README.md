@@ -1,17 +1,23 @@
 # supervisor-backtend
-本项目可以和
-[supervisor-frontend](https://github.com/lizongying/supervisor-frontend)
-结合使用
 
-## dev 
+![preview](./Screenshot.png)
+base on gin
+
+## 【推荐】和supervisor-frontend结合使用，
+
+[supervisor-frontend](https://github.com/lizongying/supervisor-frontend)
+
+### dev
+
 ```
 go run supervisor.go -c ./dev.yml
 ```
 
-## prod
+### build
+
 ```
-go build
-./supervisor -c ./prod.yml
+go build -o supervisor
+./supervisor -c ./example.yml
 ```
-![preview](./Screenshot.png)
+
 

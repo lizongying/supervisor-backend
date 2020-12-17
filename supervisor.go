@@ -174,6 +174,60 @@ func main() {
 			"data": res,
 		})
 	})
+	r.POST("/api/supervisor/std_err", func(c *gin.Context) {
+		err := c.BindJSON(&request)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code": ErrorCode,
+			})
+			return
+		}
+		if _, ok := Supervisor[request.Server]; !ok {
+			c.JSON(http.StatusOK, gin.H{
+				"code": ErrorCode,
+			})
+			return
+		}
+		res, err := Supervisor[request.Server].GetStdErr(request.Group, request.Name)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code": ErrorCode,
+			})
+			return
+		}
+		res.Server = request.Server
+		c.JSON(http.StatusOK, gin.H{
+			"code": SuccessCode,
+			"data": res,
+		})
+	})
+	r.POST("/api/supervisor/std_out", func(c *gin.Context) {
+		err := c.BindJSON(&request)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code": ErrorCode,
+			})
+			return
+		}
+		if _, ok := Supervisor[request.Server]; !ok {
+			c.JSON(http.StatusOK, gin.H{
+				"code": ErrorCode,
+			})
+			return
+		}
+		res, err := Supervisor[request.Server].GetStdOut(request.Group, request.Name)
+		if err != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code": ErrorCode,
+			})
+			return
+		}
+		res.Server = request.Server
+		c.JSON(http.StatusOK, gin.H{
+			"code": SuccessCode,
+			"data": res,
+		})
+	})
 	r.GET("/api/supervisor/list", func(c *gin.Context) {
 		list := make([]app.ProcessInfo, 0)
 		for server, item := range Supervisor {
