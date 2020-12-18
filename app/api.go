@@ -22,6 +22,7 @@ type ProcessInfo struct {
 	Pid           int    `xmlrpc:"pid" json:"pid"`
 	Server        string `json:"server"`
 }
+
 type Std struct {
 	Log    string `xmlrpc:"log" json:"log"`
 	Server string `json:"server"`
@@ -120,25 +121,25 @@ func (rpc *SupervisorRpc) ReloadConfig() (bool, error) {
 func (rpc *SupervisorRpc) GetStdErr(group string, name string) (Std, error) {
 	ret := make([]interface{}, 0)
 	params := []interface{}{fmt.Sprintf("%s:%s", group, name), 0, 5000}
-	err := rpc.Client.Call("supervisor.tailProcessStderrLog", params, &ret)
-	var log string
-	if ret[0] != nil {
+	_ = rpc.Client.Call("supervisor.tailProcessStderrLog", params, &ret)
+	log := ""
+	if len(ret) > 0 && ret[0] != nil {
 		log = ret[0].(string)
 	}
 	return Std{
 		Log: log,
-	}, err
+	}, nil
 }
 
 func (rpc *SupervisorRpc) GetStdOut(group string, name string) (Std, error) {
 	ret := make([]interface{}, 0)
 	params := []interface{}{fmt.Sprintf("%s:%s", group, name), 0, 5000}
-	err := rpc.Client.Call("supervisor.tailProcessStdoutLog", params, &ret)
-	var log string
-	if ret[0] != nil {
+	_ = rpc.Client.Call("supervisor.tailProcessStdoutLog", params, &ret)
+	log := ""
+	if len(ret) > 0 && ret[0] != nil {
 		log = ret[0].(string)
 	}
 	return Std{
 		Log: log,
-	}, err
+	}, nil
 }
