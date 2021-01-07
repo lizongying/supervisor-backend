@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"supervisor/app"
+	"sync"
 )
 
 type Request struct {
@@ -229,20 +230,26 @@ func main() {
 		})
 	})
 	r.GET("/api/supervisor/list", func(c *gin.Context) {
+		var wg sync.WaitGroup
 		list := make([]app.ProcessInfo, 0)
-		for server, item := range Supervisor {
-			tempMap := map[string]byte{}
-			ret, _ := item.GetAllProcessInfo()
-			for _, info := range ret {
-				l := len(tempMap)
-				tempMap[info.Group] = 0
-				if len(tempMap) == l {
-					continue
+		for server := range Supervisor {
+			wg.Add(1)
+			go func(server string) {
+				tempMap := map[string]byte{}
+				ret, _ := Supervisor[server].GetAllProcessInfo()
+				for _, info := range ret {
+					l := len(tempMap)
+					tempMap[info.Group] = 0
+					if len(tempMap) == l {
+						continue
+					}
+					info.Server = server
+					list = append(list, info)
 				}
-				info.Server = server
-				list = append(list, info)
-			}
+				wg.Done()
+			}(server)
 		}
+		wg.Wait()
 		c.JSON(http.StatusOK, gin.H{
 			"code": SuccessCode,
 			"data": list,
